@@ -84,5 +84,88 @@
     <br/>
 
     ### 1.1.2 팩토리 패턴 (Factory Pattern)
+    - 팩토리 패턴이란 : 
+        - 객체를 사용하는 코드에서 객체 생성 부분을 떼어내 추상화한 패턴
+        - 상속 관계에 있는 두 클래스에서 상위 클래스가 중요한 뼈대를 결정하고, 
+            하위 클래스에서 객체 생성에 관한 구체적인 내용을 결정하는 패턴
+        - 특징 : 
+            - 느슨한 결합 : 상위와 하위 클래스가 분리되기 때문
+            - 유연성 : 상위 클래스에서는 인스턴스 생성 방식에 대해 알필요가 없기 때문
+            - 유지 보수성 증가 : 객체 생성 로직이 따로 떼어져 있기 때문에 코드 리팩터링시 한 곳만 고칠 수 있음
+        - 코드 : 
+            ```
+            abstract class Coffee {
+                public abstract int getPrice();
 
+                @Override
+                public String toString() {
+                    return "Hi this coffee is " + this.getPrice();
+                }
+            }
+            // 상위 클래스 : CoffeFactory : 중요한 뼈대 결정
+            // static로 getCoffee정의 : 정적 메서드를 쓰면 클래스의 인스턴스 없이 호출이 가능
+            // 메모리를 절약할 수 있으며, 개별 인스턴스에 묶이지 않고, 클래스 내의 함수를 정의할 수 있는 장점이 있음
+            class CoffeFactory {
+                public static Coffee getCoffee(String type, int price) {
+                    if("Latte".equalsIgnoreCase(type)) 
+                        return new Latte(price);
+                    else if ("Americano".equalsIgnoreCase(type))
+                        return new Americano(price);
+                    else
+                        return new DefaultCoffee();
+                }
+            }
+            // 하위 클래스들 : DefaultCoffee, Latte, Americano
+            // 구체적인 내용을 결정
+            class DefaultCoffee extends Coffee {
+                private int price;
 
+                public DefaultCoffee() {
+                    this.price = -1;
+                }
+                @Override
+                public int getPrice() {
+                    return this.price;
+                }
+            }
+            
+            class Latte extends Coffee {
+                private int price;
+
+                public Latte(int price) {
+                    this.price = price;
+                }
+                @Override
+                public int getPrice() {
+                    return this.price;
+                }
+            }
+
+            class Americano extends Coffee {
+                private int price;
+
+                public Americano(int price) {
+                    this.price = price;
+                }
+                @Override
+                public int getPrice() {
+                    return this.price;
+                }
+            }
+
+            public class HelloWorld {
+                public static void main(String[] args) {
+                    Coffee latte = CoffeFactory.getCoffee("Latte", 4000);
+                    Coffee ame = CoffeFactory.getCoffee("Americano", 3000);
+
+                    System.out.println("Factory latte ::" + latte);
+                    System.out.println("Factory ame ::" + ame);
+                }
+            }
+            ```
+    <br/>
+    <br/>
+
+    ### 1.1.3 전략 패턴 (Strategy Pattern)
+
+            
